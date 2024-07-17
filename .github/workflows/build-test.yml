@@ -27,3 +27,6 @@ jobs:
         with:
           ruby-version: '2.7'
           bundler-cache: true
+
+      - name: Build debug android app
+        run: bundle exec fastlane android buildDebug
