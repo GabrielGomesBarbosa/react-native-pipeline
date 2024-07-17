@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "fastlane:android": "bundle exec fastlane android",
+    "android:build:release": "bundle exec fastlane android buildRelease"
   },
   "dependencies": {
     "react": "18.2.0",
