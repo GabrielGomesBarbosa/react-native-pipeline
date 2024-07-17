@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set env variable(s)
+        env:
+          RUBYOPT: '-rostruct'
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -25,13 +29,11 @@ jobs:
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7.4'
+          ruby-version: '2.7'
+          bundler-cache: true
 
       - name: Install fastlane
         run: bundle install
-
-      - name: Update fastlane
-        run: bundle update fastlane
 
       - name: Build debug android app
         run: bundle exec fastlane android buildDebug
