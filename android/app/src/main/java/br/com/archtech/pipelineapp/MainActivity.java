@@ -1,4 +1,4 @@
-package com.pipelineapp;
+package br.com.archtech.pipelineapp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
