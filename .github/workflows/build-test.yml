@@ -23,7 +23,7 @@ jobs:
       - run: yarn install
 
       - name: Setup ruby
-      - run: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
           bundler-cache: true
