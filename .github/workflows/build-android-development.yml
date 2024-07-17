@@ -12,6 +12,10 @@ jobs:
     env:
       # TODO: Remove when https://github.com/fastlane/fastlane/pull/21950 gets released
       RUBYOPT: '-rostruct'
+      ANDROID_SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
+      ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+      ANDROID_SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
+
 
     steps:
       - name: Checkout repository
@@ -33,5 +37,8 @@ jobs:
       - name: Install fastlane
         run: bundle install
 
-      - name: Build debug android app
-        run: bundle exec fastlane android buildDebug
+      # - name: Build debug android app
+      #   run: bundle exec fastlane android buildDebug
+
+      - name: Build release android app
+        run: bundle exec fastlane android buildRelease

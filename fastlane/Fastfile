@@ -1,6 +1,5 @@
-environment = ENV["ENVIRONMENT"] || "local"
+is_local = !ENV["CI"]
 local_android_key = "/Users/condomaker/Documents/projects-lesson/react-native/PipelineApp/android/app/uTask.keystore"
-is_local = environment == "local"
 
 android_project_dir = "./android"
 android_signing_key = is_local ? local_android_key : ENV["ANDROID_SIGNING_KEY"]
