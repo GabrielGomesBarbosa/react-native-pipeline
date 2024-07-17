@@ -30,5 +30,8 @@ jobs:
       - name: Install fastlane
         run: bundle install
 
+      - name: Update fastlane
+        run: bundle update fastlane
+
       - name: Build debug android app
         run: bundle exec fastlane android buildDebug
