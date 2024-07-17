@@ -9,12 +9,10 @@ jobs:
   build-android:
     name: Build Android Debug
     runs-on: ubuntu-latest
+    env:
+      RUBYOPT: '-rostruct'
 
     steps:
-      - name: Set env variable(s)
-        env:
-          RUBYOPT: '-rostruct'
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
