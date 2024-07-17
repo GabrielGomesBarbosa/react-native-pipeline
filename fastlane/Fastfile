@@ -1,0 +1,6 @@
+platform :android do
+  desc "Build debug APK"
+  lane :buildDebug do
+    gradle(task: "assembleDebug", project_dir: "./android")
+  end
+end
