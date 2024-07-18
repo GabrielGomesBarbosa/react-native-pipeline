@@ -12,7 +12,8 @@
     "fastlane:android": "bundle exec fastlane android",
     "android:build:debug": "bundle exec fastlane android buildDebug",
     "android:build:release": "bundle exec fastlane android buildRelease",
-    "android:bundle:release": "bundle exec fastlane android bundleRelease"
+    "android:bundle:release": "bundle exec fastlane android bundleRelease",
+    "check:google-play-console": "bundle exec fastlane run validate_play_store_json_key"
   },
   "dependencies": {
     "react": "18.2.0",
