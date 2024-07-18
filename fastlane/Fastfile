@@ -22,6 +22,8 @@ platform :android do
 
   desc "Build release APK"
   lane :buildRelease do
+    puts "Debug: ANDROID_SIGNING_ALIAS = #{ENV["ANDROID_SIGNING_ALIAS"]}"
+    puts "Debug: ANDROID_SIGNING_PASSWORD = #{ENV["ANDROID_SIGNING_PASSWORD"]}"
     gradle(
       task: "assembleRelease",
       project_dir: android_project_dir,

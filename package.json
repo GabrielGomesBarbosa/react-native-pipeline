@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
+    "android:key:base64": "base64 -i android/app/uTask.keystore -o ./keyBase64.txt",
     "fastlane:android": "bundle exec fastlane android",
     "android:build:release": "bundle exec fastlane android buildRelease"
   },

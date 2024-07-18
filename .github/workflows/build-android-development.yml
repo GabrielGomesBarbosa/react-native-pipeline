@@ -12,9 +12,9 @@ jobs:
     env:
       # TODO: Remove when https://github.com/fastlane/fastlane/pull/21950 gets released
       RUBYOPT: '-rostruct'
-      ANDROID_SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
-      ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
-      ANDROID_SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
+      # ANDROID_SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
+      # ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+      # ANDROID_SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
 
 
     steps:
@@ -37,8 +37,19 @@ jobs:
       - name: Install fastlane
         run: bundle install
 
+      - name: Decode android keystore
+        id: decode_android_keystore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: "uTask.keystore"
+          encodedString: ${{ secrets.ANDROID_SIGNING_KEY }}
+
       # - name: Build debug android app
       #   run: bundle exec fastlane android buildDebug
 
       - name: Build release android app
         run: bundle exec fastlane android buildRelease
+        env: 
+          ANDROID_SIGNING_KEY: ${{ steps.decode_android_keystore.outputs.filePath }}
+          ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+          ANDROID_SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}

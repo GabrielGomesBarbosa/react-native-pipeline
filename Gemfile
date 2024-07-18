@@ -10,3 +10,4 @@ gem 'activesupport', '>= 6.1.7.3', '< 7.1.0'
 
 # Adding fastlane in dependency
 gem 'fastlane'
+gem 'dotenv'
