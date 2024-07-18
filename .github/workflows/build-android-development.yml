@@ -47,8 +47,15 @@ jobs:
       # - name: Build debug android app
       #   run: bundle exec fastlane android buildDebug
 
-      - name: Build release android app
-        run: bundle exec fastlane android buildRelease
+      # - name: Build release android app
+      #   run: bundle exec fastlane android buildRelease
+      #   env: 
+      #     ANDROID_SIGNING_KEY: ${{ steps.decode_android_keystore.outputs.filePath }}
+      #     ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+      #     ANDROID_SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
+
+      - name: Bundle release aab
+        run: bundle exec fastlane android bundleRelease
         env: 
           ANDROID_SIGNING_KEY: ${{ steps.decode_android_keystore.outputs.filePath }}
           ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}

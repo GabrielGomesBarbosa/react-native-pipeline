@@ -1,4 +1,4 @@
-is_local = ENV["CI"]
+is_local = !ENV["CI"]
 local_android_key = "/Users/condomaker/Documents/projects-lesson/react-native/PipelineApp/android/app/uTask.keystore"
 
 android_project_dir = "./android"
