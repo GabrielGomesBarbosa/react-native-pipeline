@@ -1,16 +1,13 @@
-is_local = !ENV["CI"]
-local_android_key = "/Users/condomaker/Documents/projects-lesson/react-native/PipelineApp/android/app/uTask.keystore"
+is_server = ENV["CI"]
+puts "Debug: is_server = #{is_server}"
 
 android_project_dir = "./android"
-android_signing_key = is_local ? local_android_key : ENV["ANDROID_SIGNING_KEY"]
-android_signing_alias = is_local ? "uTask" : ENV["ANDROID_SIGNING_ALIAS"]
-android_signing_password = is_local ? "arch123" : ENV["ANDROID_SIGNING_PASSWORD"]
 
 android_properties = {
-  "android.injected.signing.store.file" => android_signing_key,
-  "android.injected.signing.store.password" => android_signing_password,
-  "android.injected.signing.key.alias" => android_signing_alias,
-  "android.injected.signing.key.password" => android_signing_password
+  "android.injected.signing.store.file" => ENV["ANDROID_SIGNING_KEY"],
+  "android.injected.signing.store.password" => ENV["ANDROID_SIGNING_PASSWORD"],
+  "android.injected.signing.key.alias" => ENV["ANDROID_SIGNING_ALIAS"],
+  "android.injected.signing.key.password" => ENV["ANDROID_SIGNING_PASSWORD"]
 }
 
 platform :android do
@@ -35,6 +32,7 @@ platform :android do
   lane :bundleRelease do
     puts "Debug: ANDROID_SIGNING_ALIAS = #{ENV["ANDROID_SIGNING_ALIAS"]}"
     puts "Debug: ANDROID_SIGNING_PASSWORD = #{ENV["ANDROID_SIGNING_PASSWORD"]}"
+    puts "Debug: is_server = #{is_server}"
     gradle(
       task: "bundleRelease",
       project_dir: android_project_dir,
