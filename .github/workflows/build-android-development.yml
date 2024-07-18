@@ -1,7 +1,7 @@
 name: build
 run-name: Build app uTask
 on:
-  push:
+  pull_request:
     branches:
       - development
 
@@ -15,7 +15,6 @@ jobs:
       # ANDROID_SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
       # ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
       # ANDROID_SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
-
 
     steps:
       - name: Checkout repository

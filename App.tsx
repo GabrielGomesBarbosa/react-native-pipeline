@@ -1,118 +1,89 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
   View,
+  Image,
+  FlatList,
+  StatusBar,
+  Pressable,
+  StyleSheet,
+  SafeAreaView,
+  useColorScheme,
 } from 'react-native';
+import React, {useState} from 'react';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import TaskItem from './src/components/TaskItem';
+import InputText from './src/components/InputText';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+import PlusWhite from './src/assets/images/plus-white.png';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const [task, setTask] = useState<string>('');
+  const [tasks, setTasks] = useState<Array<{id: string; label: string}>>([]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const handleAddTask = () => {
+    if (task) {
+      setTasks([...tasks, {id: `${tasks.length + 1}`, label: task}]);
+      setTask('');
+    }
+  };
+
+  const handleDeleteTask = (id: string) => {
+    setTasks(tasks.filter(task => task.id !== id));
+  };
+
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        backgroundColor: '#f2f2f2',
+      }}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
+
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 10,
+          marginBottom: 20,
+        }}>
+        <InputText value={task} onChangeText={setTask} />
+        <Pressable
+          onPress={handleAddTask}
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            justifyContent: 'center',
+            backgroundColor: '#aaaaaa',
+            padding: 10,
+            borderRadius: 30,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+          <Image source={PlusWhite} style={{height: 20, width: 20}} />
+        </Pressable>
+      </View>
+
+      <FlatList
+        keyExtractor={item => item.id}
+        data={tasks}
+        renderItem={({item}) => (
+          <TaskItem
+            key={item.id}
+            label={item.label}
+            removeTask={() => handleDeleteTask(item.id)}
+          />
+        )}
+      />
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+const styles = StyleSheet.create({});
 
 export default App;
