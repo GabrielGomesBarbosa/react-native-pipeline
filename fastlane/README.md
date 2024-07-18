@@ -31,6 +31,14 @@ Build debug APK
 
 Build release APK
 
+### android bundleRelease
+
+```sh
+[bundle exec] fastlane android bundleRelease
+```
+
+Bundle release .aab
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
