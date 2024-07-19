@@ -107,13 +107,18 @@ platform :android do
     if is_server
       system("git config --global user.email 'gabriel-gomes-barbosa@hotmail.com'")
       system("git config --global user.name 'GabrielGomesBarbosa'")
-      system("git remote set-url origin https://x-access-token:#{github_token}@github.com/#{github_repository}")
+      # system("git remote set-url origin https://x-access-token:#{github_token}@github.com/#{github_repository}")
     end
 
     puts "Debug: Push to remote repository"
     git_add(path: build_gradle_file)
     git_commit(path: build_gradle_file, message: release_notes)
     add_git_tag(tag: "v#{new_version_name}")
-    push_to_git_remote
+
+    if is_server
+      push_to_git_remote
+    else
+      system("remote set-url --push origin https://your_username:#{github_token}@github.com/#{github_repository}")
+    end
   end
 end
