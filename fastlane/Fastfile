@@ -82,8 +82,7 @@ platform :android do
 
     puts "Debug: Upload to Play Store"
     upload_to_play_store(
-      json_key: is_server ? nil : json_key_file,
-      json_key_data: is_server ? ENV["GOOGLE_PLAY_JSON_KEY"] : nil,
+      json_key_data: is_server ? ENV["GOOGLE_PLAY_JSON_KEY"] : read_json(json_path: json_key_file),
       track: "internal",
       skip_upload_apk: true, 
       release_status: "draft"

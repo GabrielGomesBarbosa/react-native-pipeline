@@ -160,6 +160,7 @@ GEM
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
     fastlane-plugin-increment_version_code (0.4.3)
     fastlane-plugin-increment_version_name (0.0.10)
+    fastlane-plugin-json (1.1.7)
     fastlane-plugin-versioning_android (0.1.1)
     ffi (1.17.0)
     fourflusher (2.3.1)
@@ -285,6 +286,7 @@ DEPENDENCIES
   fastlane
   fastlane-plugin-increment_version_code
   fastlane-plugin-increment_version_name
+  fastlane-plugin-json
   fastlane-plugin-versioning_android
 
 RUBY VERSION
