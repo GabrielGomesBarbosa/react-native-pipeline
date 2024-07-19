@@ -66,6 +66,8 @@ platform :android do
       'changelogs',
       "#{new_version_code}.txt"
     )
+
+    puts "Debug: Current folder directory = #{Dir.pwd}"
     puts "Debug: metadata_file_path = #{metadata_file_path}"
 
     puts "Debug: List current directory"
