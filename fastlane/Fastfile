@@ -49,10 +49,10 @@ platform :android do
 
     new_version_code = Integer(version_code) + 1
 
-    # puts "Debug: Update version code and name"
-    # increment_version_code(version_code: new_version_code)
-    # increment_version_name(bump_type: increase_version_type, 
-    #   gradle_file_path: android_gradle_file)
+    puts "Debug: Update version code and name"
+    increment_version_code(version_code: new_version_code)
+    increment_version_name(bump_type: increase_version_type, 
+      gradle_file_path: android_gradle_file)
 
     new_version_name = android_get_version_name(gradle_file: android_gradle_file)
 
@@ -76,38 +76,38 @@ platform :android do
     puts "Debug: List parent directory"
     system("cd .. && ls -la")
 
-    # File.open(metadata_file_path, "w") do |f|
-    #   f.write("#{release_notes} [#{new_version_name}]")
-    # end
+    File.open(metadata_file_path, "w") do |f|
+      f.write("#{release_notes} [#{new_version_name}]")
+    end
 
-    # puts "Debug: Bundle release .aab"
-    # build_android_app(
-    #   task: "bundleRelease",
-    #   project_dir: android_project_dir,
-    #   properties: android_properties
-    # )
+    puts "Debug: Bundle release .aab"
+    build_android_app(
+      task: "bundleRelease",
+      project_dir: android_project_dir,
+      properties: android_properties
+    )
 
-    # puts "Debug: Upload to Play Store"
-    # upload_to_play_store(
-    #   track: "internal", 
-    #   skip_upload_apk: true, 
-    #   release_status: "draft"
-    # )
+    puts "Debug: Upload to Play Store"
+    upload_to_play_store(
+      track: "internal", 
+      skip_upload_apk: true, 
+      release_status: "draft"
+    )
 
-    # puts "Debug: Delete changelog file"
-    # File.delete(metadata_file_path) if File.exist?(metadata_file_path)
+    puts "Debug: Delete changelog file"
+    File.delete(metadata_file_path) if File.exist?(metadata_file_path)
 
-    # build_gradle_file = File.join(
-    #   File.expand_path("..", Dir.pwd), 
-    #   'android', 
-    #   'app', 
-    #   'build.gradle'
-    # )
+    build_gradle_file = File.join(
+      File.expand_path("..", Dir.pwd), 
+      'android', 
+      'app', 
+      'build.gradle'
+    )
 
-    # puts "Debug: Push to remote repository"
-    # git_add(path: build_gradle_file)
-    # git_commit(path: build_gradle_file, message: release_notes)
-    # add_git_tag(tag: "v#{new_version_name}")
-    # push_to_git_remote
+    puts "Debug: Push to remote repository"
+    git_add(path: build_gradle_file)
+    git_commit(path: build_gradle_file, message: release_notes)
+    add_git_tag(tag: "v#{new_version_name}")
+    push_to_git_remote
   end
 end
