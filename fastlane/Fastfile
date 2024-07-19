@@ -1,4 +1,6 @@
 is_server = ENV["CI"]
+github_token = ENV["GITHUB_TOKEN"]
+github_repository = ENV["GITHUB_REPOSITORY"]
 json_key_file = CredentialsManager::AppfileConfig.try_fetch_value(:json_key_file)
 
 puts "Debug: is_server = #{is_server}"
@@ -98,10 +100,14 @@ platform :android do
       'build.gradle'
     )
 
+    puts "Debug: github_token = #{github_token}"
+    puts "Debug: github_repository = #{github_repository}"
+
     puts "Debug: Configure git"
     if is_server
       system("git config --global user.email 'gabriel-gomes-barbosa@hotmail.com'")
       system("git config --global user.name 'GabrielGomesBarbosa'")
+      system("git remote set-url origin https://x-access-token:#{github_token}@github.com/#{github_repository}")
     end
 
     puts "Debug: Push to remote repository"
