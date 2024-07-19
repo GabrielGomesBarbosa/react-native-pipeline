@@ -116,9 +116,9 @@ platform :android do
     add_git_tag(tag: "v#{new_version_name}")
 
     if is_server
-      push_to_git_remote
-    else
       system("remote set-url --push origin https://your_username:#{github_token}@github.com/#{github_repository}")
+    else
+      push_to_git_remote
     end
   end
 end
