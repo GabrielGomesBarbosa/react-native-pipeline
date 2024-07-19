@@ -58,38 +58,38 @@ platform :android do
 
     new_version_name = android_get_version_name(gradle_file: android_gradle_file)
 
-    puts "Debug: Create changelog file for release notes"
-    metadata_file_path = File.join(
-      File.expand_path("..", Dir.pwd),
-      'fastlane', 
-      'metadata',
-      'android',
-      'pt-BR',
-      'changelogs',
-      "#{new_version_code}.txt"
-    )
+    # puts "Debug: Create changelog file for release notes"
+    # metadata_file_path = File.join(
+    #   File.expand_path("..", Dir.pwd),
+    #   'fastlane', 
+    #   'metadata',
+    #   'android',
+    #   'pt-BR',
+    #   'changelogs',
+    #   "#{new_version_code}.txt"
+    # )
 
-    File.open(metadata_file_path, "w") do |f|
-      f.write("#{release_notes} [#{new_version_name}]")
-    end
+    # File.open(metadata_file_path, "w") do |f|
+    #   f.write("#{release_notes} [#{new_version_name}]")
+    # end
 
-    puts "Debug: Bundle release .aab"
-    build_android_app(
-      task: "bundleRelease",
-      project_dir: android_project_dir,
-      properties: android_properties
-    )
+    # puts "Debug: Bundle release .aab"
+    # build_android_app(
+    #   task: "bundleRelease",
+    #   project_dir: android_project_dir,
+    #   properties: android_properties
+    # )
 
-    puts "Debug: Upload to Play Store"
-    upload_to_play_store(
-      json_key: is_server ? ENV["GOOGLE_PLAY_JSON_KEY"] : json_key_file,
-      track: "internal",
-      skip_upload_apk: true, 
-      release_status: "draft"
-    )
+    # puts "Debug: Upload to Play Store"
+    # upload_to_play_store(
+    #   json_key: is_server ? ENV["GOOGLE_PLAY_JSON_KEY"] : json_key_file,
+    #   track: "internal",
+    #   skip_upload_apk: true, 
+    #   release_status: "draft"
+    # )
 
-    puts "Debug: Delete changelog file"
-    File.delete(metadata_file_path) if File.exist?(metadata_file_path)
+    # puts "Debug: Delete changelog file"
+    # File.delete(metadata_file_path) if File.exist?(metadata_file_path)
 
     build_gradle_file = File.join(
       File.expand_path("..", Dir.pwd), 

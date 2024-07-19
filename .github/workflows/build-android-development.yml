@@ -63,6 +63,7 @@ jobs:
       - name: Bundle release aab
         run: yarn android:bundle:release
         env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANDROID_SIGNING_KEY: ${{ steps.decode_android_keystore.outputs.filePath }}
           ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
           ANDROID_SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
