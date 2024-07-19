@@ -54,7 +54,7 @@ jobs:
       #     ANDROID_SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
 
       - name: Bundle release aab
-        run: bundle exec fastlane android bundleRelease
+        run: yarn android:bundle:release
         env: 
           ANDROID_SIGNING_KEY: ${{ steps.decode_android_keystore.outputs.filePath }}
           ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
