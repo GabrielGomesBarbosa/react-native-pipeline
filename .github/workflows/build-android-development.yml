@@ -43,6 +43,13 @@ jobs:
           fileName: "uTask.keystore"
           encodedString: ${{ secrets.ANDROID_SIGNING_KEY }}
 
+      - name: Decode google play json key
+        id: decode_google_play_json_key
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: "google-play-json-key.json"
+          encodedString: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+
       # - name: Build debug android app
       #   run: bundle exec fastlane android buildDebug
 
@@ -59,4 +66,4 @@ jobs:
           ANDROID_SIGNING_KEY: ${{ steps.decode_android_keystore.outputs.filePath }}
           ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
           ANDROID_SIGNING_PASSWORD: ${{ secrets.ANDROID_SIGNING_PASSWORD }}
-          GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+          GOOGLE_PLAY_JSON_KEY: ${{ steps.decode_google_play_json_key.outputs.filePath }}
