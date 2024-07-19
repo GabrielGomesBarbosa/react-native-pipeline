@@ -1,4 +1,6 @@
 is_server = ENV["CI"]
+json_key_file = CredentialsManager::AppfileConfig.try_fetch_value(:json_key_file)
+
 puts "Debug: is_server = #{is_server}"
 
 android_project_dir = "./android"
@@ -67,15 +69,6 @@ platform :android do
       "#{new_version_code}.txt"
     )
 
-    puts "Debug: Current folder directory = #{Dir.pwd}"
-    puts "Debug: metadata_file_path = #{metadata_file_path}"
-
-    puts "Debug: List current directory"
-    system("ls -la")
-
-    puts "Debug: List parent directory"
-    system("cd .. && ls -la")
-
     File.open(metadata_file_path, "w") do |f|
       f.write("#{release_notes} [#{new_version_name}]")
     end
@@ -89,7 +82,9 @@ platform :android do
 
     puts "Debug: Upload to Play Store"
     upload_to_play_store(
-      track: "internal", 
+      json_key: is_server ? json_key_file : nil,
+      json_key_data: is_server ? nil : ENV["GOOGLE_PLAY_JSON_KEY"],
+      track: "internal",
       skip_upload_apk: true, 
       release_status: "draft"
     )
