@@ -98,6 +98,12 @@ platform :android do
       'build.gradle'
     )
 
+    puts "Debug: Configure git"
+    if is_server
+      system("git config --global user.email 'gabriel-gomes-barbosa@hotmail.com'")
+      system("git config --global user.name 'GabrielGomesBarbosa'")
+    end
+
     puts "Debug: Push to remote repository"
     git_add(path: build_gradle_file)
     git_commit(path: build_gradle_file, message: release_notes)
