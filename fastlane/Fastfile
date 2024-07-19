@@ -57,7 +57,17 @@ platform :android do
     new_version_name = android_get_version_name(gradle_file: android_gradle_file)
 
     puts "Debug: Create changelog file for release notes"
-    metadata_file_path = "./metadata/android/pt-BR/changelogs/#{new_version_code}.txt"
+    metadata_file_path = File.join(
+      File.expand_path("..", Dir.pwd),
+      'fastlane', 
+      'metadata',
+      'android',
+      'pt-BR',
+      'changelogs',
+      "#{new_version_code}.txt"
+    )
+    puts "Debug: metadata_file_path = #{metadata_file_path}"
+
     File.open(metadata_file_path, "w") do |f|
       f.write("#{release_notes} [#{new_version_name}]")
     end
