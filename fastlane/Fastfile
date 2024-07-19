@@ -10,7 +10,7 @@ android_gradle_file = "#{android_project_dir}/app/build.gradle"
 
 # ToDo: These values will come from the CI environment with commit message
 increase_version_type = "patch"
-release_notes = "[Pipeline] O melhor aplicativo de tarefas de todos os tempos!"
+release_notes = "[#{is_server ? 'GitHub Actions' : 'Local'}] O melhor aplicativo de tarefas de todos os tempos!"
 
 android_properties = {
   "android.injected.signing.store.file" => ENV["ANDROID_SIGNING_KEY"],
@@ -60,38 +60,38 @@ platform :android do
 
     new_version_name = android_get_version_name(gradle_file: android_gradle_file)
 
-    # puts "Debug: Create changelog file for release notes"
-    # metadata_file_path = File.join(
-    #   File.expand_path("..", Dir.pwd),
-    #   'fastlane', 
-    #   'metadata',
-    #   'android',
-    #   'pt-BR',
-    #   'changelogs',
-    #   "#{new_version_code}.txt"
-    # )
+    puts "Debug: Create changelog file for release notes"
+    metadata_file_path = File.join(
+      File.expand_path("..", Dir.pwd),
+      'fastlane', 
+      'metadata',
+      'android',
+      'pt-BR',
+      'changelogs',
+      "#{new_version_code}.txt"
+    )
 
-    # File.open(metadata_file_path, "w") do |f|
-    #   f.write("#{release_notes} [#{new_version_name}]")
-    # end
+    File.open(metadata_file_path, "w") do |f|
+      f.write("#{release_notes} [#{new_version_name}]")
+    end
 
-    # puts "Debug: Bundle release .aab"
-    # build_android_app(
-    #   task: "bundleRelease",
-    #   project_dir: android_project_dir,
-    #   properties: android_properties
-    # )
+    puts "Debug: Bundle release .aab"
+    build_android_app(
+      task: "bundleRelease",
+      project_dir: android_project_dir,
+      properties: android_properties
+    )
 
-    # puts "Debug: Upload to Play Store"
-    # upload_to_play_store(
-    #   json_key: is_server ? ENV["GOOGLE_PLAY_JSON_KEY"] : json_key_file,
-    #   track: "internal",
-    #   skip_upload_apk: true, 
-    #   release_status: "draft"
-    # )
+    puts "Debug: Upload to Play Store"
+    upload_to_play_store(
+      json_key: is_server ? ENV["GOOGLE_PLAY_JSON_KEY"] : json_key_file,
+      track: "internal",
+      skip_upload_apk: true, 
+      release_status: "draft"
+    )
 
-    # puts "Debug: Delete changelog file"
-    # File.delete(metadata_file_path) if File.exist?(metadata_file_path)
+    puts "Debug: Delete changelog file"
+    File.delete(metadata_file_path) if File.exist?(metadata_file_path)
 
     build_gradle_file = File.join(
       File.expand_path("..", Dir.pwd), 
@@ -100,14 +100,10 @@ platform :android do
       'build.gradle'
     )
 
-    puts "Debug: github_token = #{github_token}"
-    puts "Debug: github_repository = #{github_repository}"
-
-    puts "Debug: Configure git"
+    puts "Debug: Setup git identity"
     if is_server
       system("git config --global user.email 'gabriel-gomes-barbosa@hotmail.com'")
       system("git config --global user.name 'GabrielGomesBarbosa'")
-      # system("git remote set-url origin https://x-access-token:#{github_token}@github.com/#{github_repository}")
     end
 
     puts "Debug: Push to remote repository"
