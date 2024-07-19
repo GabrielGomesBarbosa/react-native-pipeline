@@ -36,29 +36,41 @@ platform :android do
   desc "Bundle release .aab"
   lane :bundleRelease do
 
-    version_codes = google_play_track_version_codes(track: "internal")
-    puts "Debug: version_codes = #{version_codes}"
+    # version_codes = google_play_track_version_codes(track: "internal")
+    # puts "Debug: version_codes = #{version_codes}"
 
-    release_names = google_play_track_release_names(track: "internal")
-    puts "Debug: release_names = #{release_names}"
+    # release_names = google_play_track_release_names(track: "internal")
+    # puts "Debug: release_names = #{release_names}"
 
-    # puts "Debug: Get version code and name"
-    # version_code = android_get_version_code(gradle_file: android_gradle_file)
-    # version_name = android_get_version_name(gradle_file: android_gradle_file)
+    puts "Debug: Get version code and name"
+    version_code = android_get_version_code(gradle_file: android_gradle_file)
+    puts "Debug: version_code = #{version_code}"
+    version_name = android_get_version_name(gradle_file: android_gradle_file)
 
-    # puts "Debug: Update version code and name"
-    # increment_version_code(version_code: Integer(version_code) + 1)
-    # increment_version_name(bump_type: increase_version_type, 
-    #   gradle_file_path: android_gradle_file)
+    new_version_code = Integer(version_code) + 1
 
-    # puts "Debug: Bundle release .aab"
-    # build_android_app(
-    #   task: "bundleRelease",
-    #   project_dir: android_project_dir,
-    #   properties: android_properties
-    # )
+    puts "Debug: Update release notes"
+    File.open("./metadata/android/pt-BR/changelogs/#{new_version_code}.txt", "w") do |f|
+      f.write(release_notes)
+    end
 
-    # puts "Debug: Upload to Play Store"
-    # upload_to_play_store(track: "internal", skip_upload_apk: true, release_status: "draft")
+    puts "Debug: Update version code and name"
+    increment_version_code(version_code: new_version_code)
+    increment_version_name(bump_type: increase_version_type, 
+      gradle_file_path: android_gradle_file)
+
+    puts "Debug: Bundle release .aab"
+    build_android_app(
+      task: "bundleRelease",
+      project_dir: android_project_dir,
+      properties: android_properties
+    )
+
+    puts "Debug: Upload to Play Store"
+    upload_to_play_store(
+      track: "internal", 
+      skip_upload_apk: true, 
+      release_status: "draft"
+    )
   end
 end
