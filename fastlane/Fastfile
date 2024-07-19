@@ -4,7 +4,7 @@ puts "Debug: is_server = #{is_server}"
 android_project_dir = "./android"
 android_gradle_file = "#{android_project_dir}/app/build.gradle"
 
-# These values will come from the CI environment with commit message
+# ToDo: These values will come from the CI environment with commit message
 increase_version_type = "patch"
 release_notes = "[Pipeline] O melhor aplicativo de tarefas de todos os tempos!"
 
@@ -78,5 +78,18 @@ platform :android do
 
     puts "Debug: Delete changelog file"
     File.delete(metadata_file_path) if File.exist?(metadata_file_path)
+
+    build_gradle_file = File.join(
+      File.expand_path("..", Dir.pwd), 
+      'android', 
+      'app', 
+      'build.gradle'
+    )
+
+    puts "Debug: Push to remote repository"
+    git_add(path: build_gradle_file)
+    git_commit(path: build_gradle_file, message: release_notes)
+    add_git_tag(tag: "v#{new_version_name}")
+    push_to_git_remote
   end
 end
