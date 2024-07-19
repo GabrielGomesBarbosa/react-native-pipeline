@@ -45,19 +45,22 @@ platform :android do
     puts "Debug: Get version code and name"
     version_code = android_get_version_code(gradle_file: android_gradle_file)
     puts "Debug: version_code = #{version_code}"
-    version_name = android_get_version_name(gradle_file: android_gradle_file)
+    # version_name = android_get_version_name(gradle_file: android_gradle_file)
 
     new_version_code = Integer(version_code) + 1
-
-    puts "Debug: Update release notes"
-    File.open("./metadata/android/pt-BR/changelogs/#{new_version_code}.txt", "w") do |f|
-      f.write(release_notes)
-    end
 
     puts "Debug: Update version code and name"
     increment_version_code(version_code: new_version_code)
     increment_version_name(bump_type: increase_version_type, 
       gradle_file_path: android_gradle_file)
+
+    new_version_name = android_get_version_name(gradle_file: android_gradle_file)
+
+    puts "Debug: Create changelog file for release notes"
+    metadata_file_path = "./metadata/android/pt-BR/changelogs/#{new_version_code}.txt"
+    File.open(metadata_file_path, "w") do |f|
+      f.write("#{release_notes} [#{new_version_name}]")
+    end
 
     puts "Debug: Bundle release .aab"
     build_android_app(
@@ -72,5 +75,8 @@ platform :android do
       skip_upload_apk: true, 
       release_status: "draft"
     )
+
+    puts "Debug: Delete changelog file"
+    File.delete(metadata_file_path) if File.exist?(metadata_file_path)
   end
 end
