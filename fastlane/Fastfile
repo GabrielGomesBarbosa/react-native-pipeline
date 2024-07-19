@@ -2,6 +2,11 @@ is_server = ENV["CI"]
 puts "Debug: is_server = #{is_server}"
 
 android_project_dir = "./android"
+android_gradle_file = "#{android_project_dir}/app/build.gradle"
+
+# These values will come from the CI environment with commit message
+increase_version_type = "patch"
+release_notes = "[Pipeline] O melhor aplicativo de tarefas de todos os tempos!"
 
 android_properties = {
   "android.injected.signing.store.file" => ENV["ANDROID_SIGNING_KEY"],
@@ -14,14 +19,14 @@ platform :android do
 
   desc "Build debug APK"
   lane :buildDebug do
-    gradle(task: "assembleDebug", project_dir: android_project_dir)
+    build_android_app(task: "assembleDebug", project_dir: android_project_dir)
   end
 
   desc "Build release APK"
   lane :buildRelease do
     puts "Debug: ANDROID_SIGNING_ALIAS = #{ENV["ANDROID_SIGNING_ALIAS"]}"
     puts "Debug: ANDROID_SIGNING_PASSWORD = #{ENV["ANDROID_SIGNING_PASSWORD"]}"
-    gradle(
+    build_android_app(
       task: "assembleRelease",
       project_dir: android_project_dir,
       properties: android_properties
@@ -30,13 +35,30 @@ platform :android do
 
   desc "Bundle release .aab"
   lane :bundleRelease do
-    puts "Debug: ANDROID_SIGNING_ALIAS = #{ENV["ANDROID_SIGNING_ALIAS"]}"
-    puts "Debug: ANDROID_SIGNING_PASSWORD = #{ENV["ANDROID_SIGNING_PASSWORD"]}"
-    puts "Debug: is_server = #{is_server}"
-    gradle(
-      task: "bundleRelease",
-      project_dir: android_project_dir,
-      properties: android_properties
-    )
+
+    version_codes = google_play_track_version_codes(track: "internal")
+    puts "Debug: version_codes = #{version_codes}"
+
+    release_names = google_play_track_release_names(track: "internal")
+    puts "Debug: release_names = #{release_names}"
+
+    # puts "Debug: Get version code and name"
+    # version_code = android_get_version_code(gradle_file: android_gradle_file)
+    # version_name = android_get_version_name(gradle_file: android_gradle_file)
+
+    # puts "Debug: Update version code and name"
+    # increment_version_code(version_code: Integer(version_code) + 1)
+    # increment_version_name(bump_type: increase_version_type, 
+    #   gradle_file_path: android_gradle_file)
+
+    # puts "Debug: Bundle release .aab"
+    # build_android_app(
+    #   task: "bundleRelease",
+    #   project_dir: android_project_dir,
+    #   properties: android_properties
+    # )
+
+    # puts "Debug: Upload to Play Store"
+    # upload_to_play_store(track: "internal", skip_upload_apk: true, release_status: "draft")
   end
 end

@@ -20,6 +20,7 @@ export default function InputText({
         borderBottomColor: '#aaaaaa',
         borderBottomWidth: 1,
         fontSize: 13,
+        color: '#000',
       }}
       placeholderTextColor="#aaaaaa"
     />
