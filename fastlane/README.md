@@ -39,6 +39,14 @@ Build release APK
 
 Bundle release .aab
 
+### android createNewApp
+
+```sh
+[bundle exec] fastlane android createNewApp
+```
+
+Create new app in Google Play Console
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

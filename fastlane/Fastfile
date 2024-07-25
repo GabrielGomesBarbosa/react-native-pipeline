@@ -117,4 +117,23 @@ platform :android do
       push_to_git_remote
     end
   end
+
+  desc "Create new app in Google Play Console"
+  lane :createNewApp do
+
+    gradle(
+      task: "assembleRelease",
+      project_dir: android_project_dir
+    )
+
+    release_apk_path = lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]
+
+    create_app_on_managed_play_store(
+      json_key: is_server ? ENV["GOOGLE_PLAY_JSON_KEY"] : json_key_file,
+      developer_account_id: "6560789452709653077",
+      app_title: "uTodoApp",
+      language: "pt_BR",
+      apk: release_apk_path
+    )
+  end
 end
