@@ -1,0 +1,7 @@
+{
+  "id": 2,
+  "name": "ToDo Tracker",
+  "schema": "todo-tracker",
+  "primaryColor": "#28A745",
+  "backgroundColor": "#FFFFFF"
+}

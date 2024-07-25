@@ -1,6 +1,8 @@
 import React from 'react';
 import {TextInput} from 'react-native';
 
+import {primaryColor} from '../../resources/config.json';
+
 type InputTextProps = {
   value?: string;
   onChangeText?: (text: string) => void;
@@ -17,12 +19,12 @@ export default function InputText({
       placeholder="Type here, and click right button..."
       style={{
         flex: 1,
-        borderBottomColor: '#aaaaaa',
+        borderBottomColor: primaryColor,
         borderBottomWidth: 1,
         fontSize: 13,
         color: '#000',
       }}
-      placeholderTextColor="#aaaaaa"
+      placeholderTextColor={primaryColor}
     />
   );
 }
