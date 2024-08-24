@@ -1,6 +1,7 @@
 /**
  * Command to run: node scripts/buildWhitelabels.js --whitelabels=utask,task-master,task-tide
  */
+const sharp = require('sharp');
 const {argv} = require('node:process');
 const {resolve} = require('node:path');
 const {execSync} = require('node:child_process');
@@ -18,8 +19,31 @@ const BLACK_LIST_ROOT_DIRECTORIES = [
   'whitelabels',
   'whitelabels-resources',
 
-  // ToDo: Remove
+  // ToDo: Remove to run on ios
   'ios',
+];
+
+const androidResolutions = [
+  {
+    name: 'hdpi',
+    resolution: 192,
+  },
+  {
+    name: 'mdpi',
+    resolution: 128,
+  },
+  {
+    name: 'xhdpi',
+    resolution: 256,
+  },
+  {
+    name: 'xxhdpi',
+    resolution: 384,
+  },
+  {
+    name: 'xxxhdpi',
+    resolution: 512,
+  },
 ];
 
 async function readFolders(path) {
@@ -39,6 +63,32 @@ async function copyFolder(source, destination) {
   });
 }
 
+async function copyResources(appRootPath, whitelabelName, whitelabelPath) {
+  const whitelabelResourcesPath = `${appRootPath}/whitelabels-resources/${whitelabelName}`;
+  const whitelabelLogoPath = `${whitelabelResourcesPath}/logo.png`;
+  const whitelabelConfigPath = `${whitelabelResourcesPath}/config.json`;
+
+  for (const androidRes of androidResolutions) {
+    const resolution = androidRes.resolution;
+    await sharp(whitelabelLogoPath)
+      .resize(resolution, resolution)
+      .toFile(
+        `${whitelabelPath}/android/app/src/main/res/mipmap-${androidRes.name}/ic_launcher.png`,
+      );
+
+    await sharp(whitelabelLogoPath)
+      .resize(resolution, resolution)
+      .toFile(
+        `${whitelabelPath}/android/app/src/main/res/mipmap-${androidRes.name}/ic_launcher_round.png`,
+      );
+  }
+
+  const whitelabelsResourcesPath = `${appRootPath}/whitelabels/${whitelabelName}/resources`;
+
+  await cp(whitelabelLogoPath, `${whitelabelsResourcesPath}/logo.png`);
+  await cp(whitelabelConfigPath, `${whitelabelsResourcesPath}/config.json`);
+}
+
 console.log('Start build whitelabel...');
 (async function () {
   console.log('Reading folders...');
@@ -50,8 +100,6 @@ console.log('Start build whitelabel...');
   const appDirectories = directoryList.filter(
     item => !BLACK_LIST_ROOT_DIRECTORIES.includes(item),
   );
-
-  console.log('Debug:', appDirectories);
 
   const [whitelabelsArgs] = argv.filter(item => item.includes('--whitelabels'));
 
@@ -109,6 +157,8 @@ console.log('Start build whitelabel...');
         await copyFolder(srcPath, destPath);
       }
     }
+
+    await copyResources(appRootPath, whitelabelFolder, whitelabelPath);
 
     console.log(`Finish build whitelabel: ${whitelabelFolder}`);
 

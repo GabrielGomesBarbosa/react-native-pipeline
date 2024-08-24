@@ -1,7 +1,7 @@
 {
-  "id": 2,
-  "name": "ToDo Tracker",
-  "schema": "todo-tracker",
-  "primaryColor": "#28A745",
-  "backgroundColor": "#FFFFFF"
+  "id": 3,
+  "name": "Task Master",
+  "schema": "task-master",
+  "primaryColor": "#004080",
+  "backgroundColor": "#F0F0F0"
 }
